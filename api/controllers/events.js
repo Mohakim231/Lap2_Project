@@ -53,5 +53,5 @@ async function destroy (req, res) {
 };
 
 module.exports = {
-    index, show, getTop, create, destroy, update
+    index, show, create, destroy, update
 }

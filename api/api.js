@@ -13,8 +13,7 @@ api.use(logRoutes);
 
 api.get("/", (req, res) => {
     res.json({
-        name: "Discretion",
-        description: "Send and receive private messages."
+        description: "It works :)"
     })
 })
 
