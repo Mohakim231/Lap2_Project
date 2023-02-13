@@ -1,15 +1,16 @@
 const db = require('../database/connect');
 
 class Event {
-    constructor ({ event_id, event_title, event_description, intrest}) {
+    constructor ({ event_id, event_title, event_description, intrest, attending}) {
         this.id = event_id;
         this.title = event_title;
         this.description = event_description;
         this.intrest = intrest;
+        this.attending = attending;
     }
 
     static async getAll() {
-        const response = await db.query("SELECT event_id, event_title, event_description, intrest FROM events ORDER BY event_id DESC;");
+        const response = await db.query("SELECT event_id, event_title, event_description, intrest, attending FROM events ORDER BY event_id DESC;");
         return response.rows.map(g => new Event(g));
     }
 
@@ -28,9 +29,36 @@ class Event {
         return response.rows.map(w => new Event(w))
     }
 
-    async update() {
+    async interested() {
         const response = await db.query("UPDATE events SET intrest = $1 WHERE event_id = $2 RETURNING event_id, intrest;",
             [ this.intrest + 1, this.id ]);
+        if (response.rows.length != 1) {
+            throw new Error("Unable to update intrest.")
+        }
+        return new Event(response.rows[0]);
+    }
+
+    async not_interested() {
+        const response = await db.query("UPDATE events SET intrest = $1 WHERE event_id = $2 RETURNING event_id, intrest;",
+            [ this.intrest - 1, this.id ]);
+        if (response.rows.length != 1) {
+            throw new Error("Unable to update intrest.")
+        }
+        return new Event(response.rows[0]);
+    }
+
+    async attend() {
+        const response = await db.query("UPDATE events SET attending = $1 WHERE event_id = $2 RETURNING event_id, attending;",
+            [ this.attending + 1, this.id ]);
+        if (response.rows.length != 1) {
+            throw new Error("Unable to update intrest.")
+        }
+        return new Event(response.rows[0]);
+    }
+
+    async not_attending() {
+        const response = await db.query("UPDATE events SET attending = $1 WHERE event_id = $2 RETURNING event_id, attending;",
+            [ this.attending - 1, this.id ]);
         if (response.rows.length != 1) {
             throw new Error("Unable to update intrest.")
         }
