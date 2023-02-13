@@ -7,6 +7,7 @@ const eventsRouter = Router();
 
 eventsRouter.get("/", authenticator, eventsController.index);
 eventsRouter.get("/:id", eventsController.show);
+eventsRouter.get("/search/:string", eventsController.search);
 eventsRouter.post("/", eventsController.create);
 eventsRouter.patch("/interested/:id", eventsController.interested);
 eventsRouter.patch("/not_interested/:id", eventsController.not_interested);

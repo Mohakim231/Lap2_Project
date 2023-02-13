@@ -19,6 +19,18 @@ async function show(req, res) {
     }
 };
 
+async function search(req, res) {
+    try {
+        const string = req.params.string
+        console.log(string)
+        const events = await Event.search(string);
+        console.log(events)
+        res.status(200).json(events)
+    } catch (error) {
+        res.status(404).json({"error": err.message})
+    }
+};
+
 async function create (req, res) {
     try {
         const data = req.body;
@@ -85,5 +97,5 @@ async function destroy (req, res) {
 };
 
 module.exports = {
-    index, show, create, destroy, interested, not_interested, attend, not_attending
+    index, show, create, destroy, interested, not_interested, attend, not_attending, search
 }
