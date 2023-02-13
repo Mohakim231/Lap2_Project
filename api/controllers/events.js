@@ -29,11 +29,44 @@ async function create (req, res) {
     }
 };
 
-async function update (req, res) {
+async function interested (req, res) {
     try {
         const id = parseInt(req.params.id);
         const events = await Event.getOneById(id);
-        const result = await events.update();
+        const result = await events.interested();
+        res.status(200).json(result);
+    } catch (err) {
+        res.status(404).json({"error": err.message})
+    }
+};
+
+async function not_interested (req, res) {
+    try {
+        const id = parseInt(req.params.id);
+        const events = await Event.getOneById(id);
+        const result = await events.not_interested();
+        res.status(200).json(result);
+    } catch (err) {
+        res.status(404).json({"error": err.message})
+    }
+};
+
+async function attend (req, res) {
+    try {
+        const id = parseInt(req.params.id);
+        const events = await Event.getOneById(id);
+        const result = await events.attend();
+        res.status(200).json(result);
+    } catch (err) {
+        res.status(404).json({"error": err.message})
+    }
+};
+
+async function not_attending (req, res) {
+    try {
+        const id = parseInt(req.params.id);
+        const events = await Event.getOneById(id);
+        const result = await events.not_attending();
         res.status(200).json(result);
     } catch (err) {
         res.status(404).json({"error": err.message})
@@ -52,5 +85,5 @@ async function destroy (req, res) {
 };
 
 module.exports = {
-    index, show, create, destroy, update
+    index, show, create, destroy, interested, not_interested, attend, not_attending
 }
