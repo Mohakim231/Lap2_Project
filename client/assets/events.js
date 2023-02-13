@@ -1,63 +1,44 @@
-function createPostElement (data) {
-    const post = document.createElement("div");
-    post.className = "event";
+const allEvents = document.getElementById('posts');
+fetch('http://localhost:3000/events')
+  .then(response => response.json())
+  .then(data => {
+    data.forEach(item => {
+      const eventDiv = document.createElement('div');
+      const eventTitle = document.createElement('h3');
+      eventTitle.textContent = item.title;
+      const eventContent = document.createElement('p');
+      eventContent.textContent = item.description;
+      const interest = document.createElement('p');
+      interest.textContent = item.intrest;
+      eventDiv.appendChild(eventTitle)
+      eventDiv.appendChild(eventContent)
+      eventDiv.appendChild(interest);
+      allEvents.appendChild(eventDiv);
+    });
+  });
+  const form = document.getElementById('post-form');
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const event_title = document.getElementById('title').value;
+    const event_description = document.getElementById('content').value;
+    const formData = {
+      event_title,
+      event_description
+    };
+  
+    fetch('http://localhost:3000/events', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
 
-    const header = document.createElement("h2");
-    header.textContent = data["event_title"];
-    post.appendChild(header);
-
-    const content = document.createElement("p");
-    content.textContent = data["event_description"];
-    post.appendChild(content);
-
-    const intrest = document.createElement("p");
-    content.textContent = data["intrest"];
-    post.appendChild(intrest);
-
-    return post;
-}
-
-document.getElementById("post-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const form = new FormData(e.target);
-
-    const options = {
-        method: "POST",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            title: form.get("event_title"),
-            content: form.get("content")
-        })
-    }
-
-    const result = await fetch("http://localhost:3000/events", options);
-
-    if (result.status == 201) {
+    })
+    .then(response => response.json())
+    .then(data => {
         window.location.reload();
-    }
-})
-
-async function loadPosts () {
-    
-    const response = await fetch("http://localhost:3000/events");
-
-    if (response.status == 200) {
-        const posts = await response.json();
-    
-        const container = document.getElementById("posts");
-
-        posts.forEach(p => {
-            const elem = createPostElement(p);
-            container.appendChild(elem);
-        })
-    } else {
-        window.location.assign("./index.html");
-    }
-
-}
-
-loadPosts();
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  });
