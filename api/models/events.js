@@ -28,9 +28,9 @@ class Event {
         return response.rows.map(w => new Event(w))
     }
 
-    async update(data) {
+    async update() {
         const response = await db.query("UPDATE events SET intrest = $1 WHERE event_id = $2 RETURNING event_id, intrest;",
-            [ this.intrest + data.intrest, this.id ]);
+            [ this.intrest + 1, this.id ]);
         if (response.rows.length != 1) {
             throw new Error("Unable to update intrest.")
         }

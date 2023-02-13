@@ -33,8 +33,7 @@ async function update (req, res) {
     try {
         const id = parseInt(req.params.id);
         const events = await Event.getOneById(id);
-        const data = req.body;
-        const result = await events.update(data);
+        const result = await events.update();
         res.status(200).json(result);
     } catch (err) {
         res.status(404).json({"error": err.message})
