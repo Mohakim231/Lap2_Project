@@ -127,3 +127,65 @@ fetch('http://localhost:3000/events', options)
       console.error(error);
     });
   });
+  async function subtractInterest (item) {
+    const interestButton = document.getElementById(`interest-${item.id}`);
+    await fetch(`http://localhost:3000/events/not_interested/${item.id}`, {
+      method: 'PATCH'
+    })
+    .then(response => response.json())
+    .then(data => {
+      interestButton.innerHTML = `Interested ${data.intrest}`;
+    })
+    .catch(error => {
+      console.error(error);
+    });
+    interestButton.addEventListener('click', () => addInterest(item), {once: true})
+  }
+  
+  //when user is interested
+  async function addInterest (item) {
+    const interestButton = document.getElementById(`interest-${item.id}`);
+    await fetch(`http://localhost:3000/events/interested/${item.id}`, {
+      method: 'PATCH'
+    })
+    .then(response => response.json())
+    .then(data => {
+      interestButton.innerHTML = `Interested ${data.intrest}`;
+    })
+    .catch(error => {
+      console.error(error);
+    });
+    interestButton.addEventListener('click', () => subtractInterest(item), {once: true})
+  }
+  
+  //not attending anymore
+  async function not_attending (item) {
+    const attendButton = document.getElementById(`attend-${item.id}`);
+    await fetch(`http://localhost:3000/events/not_attending/${item.id}`, {
+      method: 'PATCH'
+    })
+    .then(response => response.json())
+    .then(data => {
+      attendButton.innerHTML = `Attending ${data.attending}`;
+    })
+    .catch(error => {
+      console.error(error);
+    });
+    attendButton.addEventListener('click', () => attend(item), {once: true})
+  }
+  
+  //attend event
+  async function attend (item) {
+    const attendButton = document.getElementById(`attend-${item.id}`);
+    await fetch(`http://localhost:3000/events/attend/${item.id}`, {
+      method: 'PATCH'
+    })
+    .then(response => response.json())
+    .then(data => {
+      attendButton.innerHTML = `Attending ${data.attending}`;
+    })
+    .catch(error => {
+      console.error(error);
+    });
+    attendButton.addEventListener('click', () => not_attending(item), {once: true})
+  }
