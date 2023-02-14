@@ -6,6 +6,7 @@ class Event {
         this.title = event_title;
         this.description = event_description;
         this.intrest = intrest;
+        this.attending = attending;
     }
 
     static async getAll() {
@@ -19,6 +20,11 @@ class Event {
             throw new Error("Unable to locate event.")
         }
         return new Event(response.rows[0]);
+    }
+
+    static async search(string) {
+        const response = await db.query("SELECT * FROM events WHERE event_title ILIKE '%' || $1 || '%' OR event_description ILIKE '%' || $1 || '%';", [string]);
+        return response.rows.map(g => new Event(g));
     }
 
     static async create(data) {

@@ -24,4 +24,6 @@ CREATE TABLE events (
     event_description VARCHAR(500),
     intrest INT DEFAULT 0,
     attending INT DEFAULT 0
+
 );
+
