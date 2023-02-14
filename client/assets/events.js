@@ -1,5 +1,83 @@
+  async function subtractInterest (item) {
+    const interestButton = document.getElementById(`interest-${item.id}`);
+    await fetch(`http://localhost:3000/events/not_interested/${item.id}`, {
+      method: 'PATCH'
+    })
+    .then(response => response.json())
+    .then(data => {
+      interestButton.innerHTML = `Interested ${data.intrest}`;
+    })
+    .catch(error => {
+      console.error(error);
+    });
+    interestButton.addEventListener('click', () => addInterest(item), {once: true})
+  }
+  
+  //when user is interested
+  async function addInterest (item) {
+    const interestButton = document.getElementById(`interest-${item.id}`);
+    await fetch(`http://localhost:3000/events/interested/${item.id}`, {
+      method: 'PATCH'
+    })
+    .then(response => response.json())
+    .then(data => {
+      interestButton.innerHTML = `Interested ${data.intrest}`;
+    })
+    .catch(error => {
+      console.error(error);
+    });
+    interestButton.addEventListener('click', () => subtractInterest(item), {once: true})
+  }
+  
+  //not attending anymore
+  async function not_attending (item) {
+    const attendButton = document.getElementById(`attend-${item.id}`);
+    await fetch(`http://localhost:3000/events/not_attending/${item.id}`, {
+      method: 'PATCH'
+    })
+    .then(response => response.json())
+    .then(data => {
+      attendButton.innerHTML = `Attending ${data.attending}`;
+    })
+    .catch(error => {
+      console.error(error);
+    });
+    attendButton.addEventListener('click', () => attend(item), {once: true})
+  }
+  
+  //attend event
+  async function attend (item) {
+    const attendButton = document.getElementById(`attend-${item.id}`);
+    await fetch(`http://localhost:3000/events/attend/${item.id}`, {
+      method: 'PATCH'
+    })
+    .then(response => response.json())
+    .then(data => {
+      attendButton.innerHTML = `Attending ${data.attending}`;
+    })
+    .catch(error => {
+      console.error(error);
+    });
+    attendButton.addEventListener('click', () => not_attending(item), {once: true})
+  }
+
+  // async function search (string) {
+  //   await fetch(`http://localhost:3000/events/search/${string}`,{
+  //     method: 'GET'
+  //   })
+  //   .then(response => response.json())
+  //   .then(data => {
+
+  //   })
+  // }
+
 const allEvents = document.getElementById('posts');
-fetch('http://localhost:3000/events')
+const options = {
+  headers: {
+    'Authorization': localStorage.getItem('token')
+  }
+};
+fetch('http://localhost:3000/events', options)
   .then(response => response.json())
   .then(data => {
     data.forEach(item => {
@@ -8,11 +86,18 @@ fetch('http://localhost:3000/events')
       eventTitle.textContent = item.title;
       const eventContent = document.createElement('p');
       eventContent.textContent = item.description;
-      const interest = document.createElement('p');
-      interest.textContent = item.intrest;
+      const interest = document.createElement('button');
+      interest.innerHTML = `Interested ${item.intrest}`;
+      interest.id = `interest-${item.id}`;
+      const attending = document.createElement('button');
+      attending.innerHTML = `Attending ${item.attending}`;
+      attending.id = `attend-${item.id}`;
       eventDiv.appendChild(eventTitle)
       eventDiv.appendChild(eventContent)
       eventDiv.appendChild(interest);
+      eventDiv.appendChild(attending);
+      interest.addEventListener('click', () => addInterest(item), {once: true});
+      attending.addEventListener('click', () => attend(item), {once: true});
       allEvents.appendChild(eventDiv);
     });
   });

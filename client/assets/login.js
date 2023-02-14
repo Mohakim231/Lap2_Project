@@ -20,8 +20,8 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     const data = await response.json();
 
     if (response.status == 200) {
-        localStorage.setIem("token", data.token);
-        window.location.assign("main.html")
+        localStorage.setItem("token", data.token);
+        window.location.assign("events.html")
     } else {
         alert(data.error);
     }

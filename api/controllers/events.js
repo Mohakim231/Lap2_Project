@@ -19,6 +19,18 @@ async function show(req, res) {
     }
 };
 
+async function search(req, res) {
+    try {
+        const string = req.params.string
+        console.log(string)
+        const events = await Event.search(string);
+        console.log(events)
+        res.status(200).json(events)
+    } catch (error) {
+        res.status(404).json({"error": err.message})
+    }
+};
+
 async function create (req, res) {
     try {
         const data = req.body;
@@ -29,11 +41,44 @@ async function create (req, res) {
     }
 };
 
-async function update (req, res) {
+async function interested (req, res) {
     try {
         const id = parseInt(req.params.id);
         const events = await Event.getOneById(id);
-        const result = await events.update();
+        const result = await events.interested();
+        res.status(200).json(result);
+    } catch (err) {
+        res.status(404).json({"error": err.message})
+    }
+};
+
+async function not_interested (req, res) {
+    try {
+        const id = parseInt(req.params.id);
+        const events = await Event.getOneById(id);
+        const result = await events.not_interested();
+        res.status(200).json(result);
+    } catch (err) {
+        res.status(404).json({"error": err.message})
+    }
+};
+
+async function attend (req, res) {
+    try {
+        const id = parseInt(req.params.id);
+        const events = await Event.getOneById(id);
+        const result = await events.attend();
+        res.status(200).json(result);
+    } catch (err) {
+        res.status(404).json({"error": err.message})
+    }
+};
+
+async function not_attending (req, res) {
+    try {
+        const id = parseInt(req.params.id);
+        const events = await Event.getOneById(id);
+        const result = await events.not_attending();
         res.status(200).json(result);
     } catch (err) {
         res.status(404).json({"error": err.message})
@@ -52,5 +97,5 @@ async function destroy (req, res) {
 };
 
 module.exports = {
-    index, show, create, destroy, update
+    index, show, create, destroy, interested, not_interested, attend, not_attending, search
 }
