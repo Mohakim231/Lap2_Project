@@ -98,6 +98,5 @@ async function destroy (req, res) {
 
 module.exports = {
     index, show, create, destroy, interested, not_interested, attend, not_attending, search
-
 }
 
