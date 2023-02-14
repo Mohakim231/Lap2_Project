@@ -22,7 +22,7 @@ async function login (req, res) {
     try {
        const data = req.body;
        const user = await User.getOneByUsername(data.username);
-       const authenticated = await bcryptcompare(data.password, user.password);
+       const authenticated = await bcrypt.compare(data.password, user.password);
        if(!authenticated){
         throw new Error("Incorrect credentials");
        } else {
