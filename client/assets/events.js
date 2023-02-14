@@ -64,8 +64,13 @@ async function attend (item) {
   attendButton.addEventListener('click', () => not_attending(item), {once: true})
 }
 
+const options = {
+  headers: {
+    'Authorization': localStorage.getItem('token')
+  }
+};
 
-fetch('http://localhost:3000/events')
+fetch('http://localhost:3000/events', options)
   .then(response => response.json())
   .then(data => {
     data.forEach(item => {
