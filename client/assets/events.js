@@ -92,8 +92,8 @@ fetch('http://localhost:3000/events', options)
       const attending = document.createElement('button');
       attending.innerHTML = `Attending ${item.attending}`;
       attending.id = `attend-${item.id}`;
-      eventDiv.appendChild(eventTitle)
-      eventDiv.appendChild(eventContent)
+      eventDiv.appendChild(eventTitle);
+      eventDiv.appendChild(eventContent);
       eventDiv.appendChild(interest);
       eventDiv.appendChild(attending);
       interest.addEventListener('click', () => addInterest(item), {once: true});
@@ -106,9 +106,11 @@ fetch('http://localhost:3000/events', options)
     event.preventDefault();
     const event_title = document.getElementById('title').value;
     const event_description = document.getElementById('content').value;
+    const token = localStorage.getItem('token')
     const formData = {
       event_title,
-      event_description
+      event_description,
+      token
     };
   
     fetch('http://localhost:3000/events', {

@@ -1,11 +1,12 @@
 const Event = require("../models/events");
+const Token = require('../models/token');
 
 async function index(req, res) {
     try {
         const events = await Event.getAll();
         res.status(200).json(events)
     } catch (error) {
-        res.status(500).json({"error": err.message})
+        res.status(500).json({"error": error.message})
     }
 };
 
@@ -15,7 +16,7 @@ async function show(req, res) {
         const events = await Event.getOneById(id);
         res.status(200).json(events)
     } catch (error) {
-        res.status(404).json({"error": err.message})
+        res.status(404).json({"error": error.message})
     }
 };
 
@@ -27,7 +28,7 @@ async function search(req, res) {
         console.log(events)
         res.status(200).json(events)
     } catch (error) {
-        res.status(404).json({"error": err.message})
+        res.status(404).json({"error": error.message})
     }
 };
 
