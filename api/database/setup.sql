@@ -1,5 +1,6 @@
-DROP TABLE IF EXISTS user_account;
+
 DROP TABLE IF EXISTS token;
+DROP TABLE IF EXISTS user_account;
 DROP TABLE IF EXISTS events;
 
 CREATE TABLE user_account (
