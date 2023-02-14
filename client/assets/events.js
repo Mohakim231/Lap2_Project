@@ -83,6 +83,8 @@ fetch('http://localhost:3000/events', options)
     data.forEach(item => {
       const eventDiv = document.createElement('div');
       const eventTitle = document.createElement('h3');
+      const userName = document.createElement('h6')
+      userName.textContent = item.user.username;
       eventTitle.textContent = item.title;
       const eventContent = document.createElement('p');
       eventContent.textContent = item.description;
@@ -94,6 +96,7 @@ fetch('http://localhost:3000/events', options)
       attending.id = `attend-${item.id}`;
       eventDiv.appendChild(eventTitle);
       eventDiv.appendChild(eventContent);
+      eventDiv.appendChild(userName);
       eventDiv.appendChild(interest);
       eventDiv.appendChild(attending);
       interest.addEventListener('click', () => addInterest(item), {once: true});

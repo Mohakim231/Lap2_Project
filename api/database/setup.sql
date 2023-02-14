@@ -1,7 +1,6 @@
 DROP TABLE IF EXISTS token;
-DROP TABLE IF EXISTS events;
 DROP TABLE IF EXISTS user_account;
-
+DROP TABLE IF EXISTS events;
 
 CREATE TABLE user_account (
     user_id INT GENERATED ALWAYS AS IDENTITY,
@@ -20,8 +19,10 @@ CREATE TABLE token (
 
 CREATE TABLE events (
     event_id INT GENERATED ALWAYS AS IDENTITY,
+    user_id INT NOT NULL,
     event_title VARCHAR(30) NOT NULL,
     event_description VARCHAR(500),
     intrest INT DEFAULT 0,
-    attending INT DEFAULT 0
+    attending INT DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES user_account("user_id")
 );
