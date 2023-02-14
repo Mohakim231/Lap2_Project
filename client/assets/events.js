@@ -1,4 +1,4 @@
-const allEvents = document.getElementById('posts');
+  const allEvents = document.getElementById('posts');
 
 //When user isnt interested anymore
 async function subtractInterest (item) {

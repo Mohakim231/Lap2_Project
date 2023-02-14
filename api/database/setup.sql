@@ -20,8 +20,11 @@ CREATE TABLE token (
 
 CREATE TABLE events (
     event_id INT GENERATED ALWAYS AS IDENTITY,
+    FOREIGN KEY (username) REFERENCES user_account("username")
     event_title VARCHAR(30) NOT NULL,
     event_description VARCHAR(500),
     intrest INT DEFAULT 0,
     attending INT DEFAULT 0
+
 );
+

@@ -1,8 +1,9 @@
 const db = require('../database/connect');
 
 class Event {
-    constructor ({ event_id, event_title, event_description, intrest, attending}) {
+    constructor ({ event_id, username, event_title, event_description, intrest}) {
         this.id = event_id;
+        this.username = username
         this.title = event_title;
         this.description = event_description;
         this.intrest = intrest;
@@ -10,7 +11,8 @@ class Event {
     }
 
     static async getAll() {
-        const response = await db.query("SELECT event_id, event_title, event_description, intrest, attending FROM events ORDER BY event_id DESC;");
+
+        const response = await db.query("SELECT event_id, event_title, username, event_description, intrest FROM events ORDER BY event_id DESC;");
         return response.rows.map(g => new Event(g));
     }
 
@@ -28,8 +30,8 @@ class Event {
     }
 
     static async create(data) {
-        const { event_title, event_description } = data;
-        const response = await db.query('INSERT INTO events (event_title, event_description) VALUES ($1, $2) RETURNING *;', [ event_title, event_description ]);
+        const { event_title, username, event_description } = data;
+        const response = await db.query('INSERT INTO events (event_title, username, event_description) VALUES ($1, $2) RETURNING *;', [ event_title, username, event_description ]);
 
         return response.rows.map(w => new Event(w))
     }
